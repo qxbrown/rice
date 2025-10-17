@@ -5,7 +5,7 @@
 #### Permissions
 
 ```bash
->_ chmod +x install.sh
+chmod +x install.sh
 ```
 
 #### Install
