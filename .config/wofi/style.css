@@ -1,0 +1,70 @@
+@import "/home/papa/.cache/wal/colors-waybar.css";
+
+* {
+  font-family: "JetBrainsMono Nerd Font ";
+}
+
+window {
+  margin:5px;
+  /* Dynamic background color */
+  /* Rounded corners */
+  backdrop-filter: blur(10px);
+  /* Blur effect for a frosted glass look */
+  border:none;
+  /* Dynamic foreground color for soft border */
+  font-family: JetBrains Mono
+}
+
+#input {
+  all: unset;
+  min-height: 40px;
+  border: none;
+  color: @color2;
+  /* Dynamic foreground color for input text */
+  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.2);
+  /* Semi-transparent background for input field */
+  outline: none;
+}
+
+#inner-box {
+  margin: 4px;
+  padding: 10px;
+  font-weight: normal;
+}
+
+#outer-box {
+  margin: 0px;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+}
+
+#scroll {
+  margin-top: 4px;
+  border: none;
+  border-radius: 15px;
+  background-color: transparent;
+}
+
+#text:selected {
+  color: @foreground;
+  /* Dynamic foreground color for selected text */
+  background-color: rgba(0, 0, 0, 0.1);
+  /* Light background for selected items */
+}
+
+#entry {
+  margin: 0px;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  /* Dynamic foreground color for entries */
+}
+
+#entry:selected {
+  margin: 0px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  /* Subtle highlight for selected entries */
+}
