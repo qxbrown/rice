@@ -1,18 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
-echo -e "\n=== Arch Rice Auto Installer ===\n"
+# =============================
+# ArchBTW Rice Auto Installer
+# =============================
 
-# --- Check if paru exists ---
+GREEN='\e[1;32m'
+BLUE='\e[1;34m'
+RESET='\e[0m'
+
+echo -e "\n${GREEN}=== ArchBTW Rice Auto Installer ===${RESET}\n"
+
+# -----------------------------
+# Check if paru exists
+# -----------------------------
 if command -v paru &>/dev/null; then
-    echo "Paru detected, moving on..."
+    echo -e "${GREEN}Paru detected, moving on...${RESET}"
 else
-    echo "Paru not found. Installing paru..."
+    echo -e "${BLUE}Paru not found. Installing paru...${RESET}"
 
-    # Install base-devel and git if needed
     sudo pacman -S --needed --noconfirm base-devel git
 
-    # Clone paru-bin to temporary directory
     TMPDIR=$(mktemp -d)
     git clone https://aur.archlinux.org/paru-bin.git "$TMPDIR/paru-bin"
     cd "$TMPDIR/paru-bin"
@@ -20,35 +28,48 @@ else
     cd - >/dev/null
     rm -rf "$TMPDIR"
 
-    echo "Paru installation complete."
+    echo -e "${GREEN}Paru installation complete.${RESET}"
 fi
 
-# --- Optimize pacman.conf ---
+# -----------------------------
+# Optimize pacman.conf
+# -----------------------------
 sudo sed -i 's/^#ParallelDownloads = 5$/ParallelDownloads = 15\nILoveCandy/' /etc/pacman.conf || true
 
-# --- Install main packages via pacman ---
-echo "Installing system packages via pacman..."
-sudo pacman -S --noconfirm --needed \
-    npm zsh pipewire pipewire-alsa pipewire-audio pipewire-jack pipewire-media-session \
-    ttf-jetbrains-mono-nerd noto-fonts-emoji noto-fonts-cjk ttf-font-awesome polkit-gnome mpv imv ffmpeg \
-    hyprland dunst wofi swaybg grim slurp kitty pamixer brightnessctl waybar xdg-desktop-portal-hyprland \
-    cliphist clang bluez bluez-utils pulseaudio-bluetooth gvfs-mtp btop qbittorrent thunar tumbler unzip \
-    file-roller android-tools xdg-user-dirs ranger python-pillow firewalld neovim exa ripgrep perl-image-exiftool \
-    duf fzf discord visual-studio-code-bin firefox spotify tmux pavucontrol git nodejs python go htop terraform \
-    docker docker-compose docker-buildx docker-machine docker-ce \
-    kubectl kubeadm kubelet minikube ansible aws-cli brave-bin
+# -----------------------------
+# Packages
+# -----------------------------
+PACMAN_PACKAGES=(
+    npm zsh pipewire pipewire-alsa pipewire-audio pipewire-jack pipewire-media-session
+    ttf-jetbrains-mono-nerd noto-fonts-emoji noto-fonts-cjk ttf-font-awesome polkit-gnome mpv imv ffmpeg
+    hyprland dunst wofi swaybg grim slurp kitty pamixer brightnessctl waybar xdg-desktop-portal-hyprland
+    cliphist clang bluez bluez-utils pulseaudio-bluetooth gvfs-mtp btop qbittorrent thunar tumbler unzip
+    file-roller android-tools xdg-user-dirs ranger python-pillow firewalld neovim exa ripgrep perl-image-exiftool
+    duf fzf discord firefox tmux pavucontrol git nodejs python go htop terraform docker docker-compose docker-buildx
+    docker-machine kubectl kubeadm kubelet minikube ansible aws-cli
+)
 
-# --- Install AUR packages via paru ---
-echo "Installing AUR packages via paru..."
-paru -S --noconfirm --needed \
-    mpd-mpris-bin ncmpcpp mpd nwg-look zoxide hyprlock wlogout tldr newsboat \
-    xclip urlview bat yt-dlp alacritty anyrun-git banana-cursor-bin clipse-bin
+AUR_PACKAGES=(
+    visual-studio-code-bin spotify brave-bin mpd-mpris-bin ncmpcpp mpd nwg-look zoxide hyprlock wlogout tldr
+    newsboat xclip urlview bat yt-dlp alacritty anyrun-git banana-cursor-bin clipse-bin
+)
 
-# --- Copy .config directories ---
-echo "Copying configuration files..."
+# -----------------------------
+# Install packages
+# -----------------------------
+echo -e "${GREEN}Installing system packages via pacman...${RESET}"
+sudo pacman -S --noconfirm --needed "${PACMAN_PACKAGES[@]}"
+
+echo -e "${BLUE}Installing AUR packages via paru...${RESET}"
+paru -S --noconfirm --needed "${AUR_PACKAGES[@]}"
+
+# -----------------------------
+# Copy configuration files
+# -----------------------------
+echo -e "${GREEN}Copying configuration files...${RESET}"
+
 mkdir -p ~/.config ~/tmux
 
-# List of .config directories to copy
 CONFIG_DIRS=(
     ".config/themes"
     ".config/qbittorrent"
@@ -75,29 +96,37 @@ CONFIG_DIRS=(
 )
 
 for dir in "${CONFIG_DIRS[@]}"; do
-    cp -r "$dir" ~/.config/
+    if [ -d "$dir" ]; then
+        cp -r "$dir" ~/.config/
+    fi
 done
 
-# Copy tmux files
-cp -r tmux/.tmux-cht-command ~/tmux/
-cp -r tmux/.tmux-cht-languages ~/tmux/
+# TMUX configs
+cp -r tmux/.tmux-cht-command ~/tmux/ 2>/dev/null || true
+cp -r tmux/.tmux-cht-languages ~/tmux/ 2>/dev/null || true
 cp -r tmux/.tmux.conf ~/
-cp -r tmux/fsb.sh ~/tmux/
-cp -r tmux/fshow.sh ~/tmux/
+cp -r tmux/fsb.sh ~/tmux/ 2>/dev/null || true
+cp -r tmux/fshow.sh ~/tmux/ 2>/dev/null || true
 
-# Copy home dotfiles
+# Home dotfiles
 cp -r .zshrc ~/
 
-# --- Set permissions for scripts ---
-chmod +x ~/.config/hypr/scripts/{linkhandler,lookup.sh,tmuxsession,tmuxcht.sh}
-chmod +x ~/tmux/{fsb.sh,fshow.sh}
+# -----------------------------
+# Set script permissions
+# -----------------------------
+chmod +x ~/.config/hypr/scripts/{linkhandler,lookup.sh,tmuxsession,tmuxcht.sh} 2>/dev/null || true
+chmod +x ~/tmux/{fsb.sh,fshow.sh} 2>/dev/null || true
 
-# --- Change default shell to Zsh ---
-echo "Changing shell to Zsh..."
-chsh -s /usr/bin/zsh
+# -----------------------------
+# Change default shell to Zsh
+# -----------------------------
+echo -e "${GREEN}Changing shell to Zsh...${RESET}"
+chsh -s /usr/bin/zsh || true
 
-# --- Final message ---
-echo "Installation complete."
+# -----------------------------
+# Finish message
+# -----------------------------
+echo -e "${GREEN}Installation complete!${RESET}"
 echo "You can start Hyprland by typing: Hyprland"
 
 read -n1 -rep 'Would you like to start Hyprland now? (y/n): ' HYP
