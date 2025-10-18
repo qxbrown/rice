@@ -2,7 +2,7 @@
 set -e
 
 # =============================
-# ArchBTW Rice Auto Installer
+# Qx Rice Installer
 # =============================
 
 GREEN='\e[1;32m'
@@ -12,13 +12,18 @@ RESET='\e[0m'
 echo -e "\n${GREEN}Qx Rice Installer${RESET}\n"
 
 # -----------------------------
+# Update system first
+# -----------------------------
+echo -e "${BLUE}Updating system...${RESET}"
+sudo pacman -Syu --noconfirm
+
+# -----------------------------
 # Check if paru exists
 # -----------------------------
 if command -v paru &>/dev/null; then
     echo -e "${GREEN}Paru detected, moving on...${RESET}"
 else
     echo -e "${BLUE}Paru not found. Installing paru...${RESET}"
-
     sudo pacman -S --needed --noconfirm base-devel git >/dev/null
 
     TMPDIR=$(mktemp -d)
@@ -55,13 +60,13 @@ AUR_PACKAGES=(
 )
 
 # -----------------------------
-# Install packages
+# Install packages (skip conflicts)
 # -----------------------------
 echo -e "${GREEN}Installing system packages via pacman...${RESET}"
-sudo pacman -S --noconfirm --needed "${PACMAN_PACKAGES[@]}" >/dev/null
+sudo pacman -S --noconfirm --needed "${PACMAN_PACKAGES[@]}" || true
 
 echo -e "${BLUE}Installing AUR packages via paru...${RESET}"
-paru -S --noconfirm --needed "${AUR_PACKAGES[@]}" >/dev/null
+paru -S --noconfirm --needed "${AUR_PACKAGES[@]}" || true
 
 # -----------------------------
 # Copy configuration files
