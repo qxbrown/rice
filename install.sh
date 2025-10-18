@@ -46,7 +46,7 @@ PACMAN_PACKAGES=(
     cliphist clang bluez bluez-utils pulseaudio-bluetooth gvfs-mtp btop qbittorrent thunar tumbler unzip
     file-roller android-tools xdg-user-dirs ranger python-pillow firewalld neovim exa ripgrep perl-image-exiftool
     duf fzf discord firefox tmux pavucontrol git nodejs python go htop terraform docker docker-compose docker-buildx
-    docker-machine kubectl kubeadm kubelet minikube ansible aws-cli
+    docker-machine kubectl kubeadm kubelet minikube ansible aws-cli-v2
 )
 
 AUR_PACKAGES=(
