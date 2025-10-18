@@ -9,7 +9,7 @@ GREEN='\e[1;32m'
 BLUE='\e[1;34m'
 RESET='\e[0m'
 
-echo -e "\n${GREEN}=== ArchBTW Rice Auto Installer ===${RESET}\n"
+echo -e "\n${GREEN}Qx Rice Installer${RESET}\n"
 
 # -----------------------------
 # Check if paru exists
@@ -19,7 +19,7 @@ if command -v paru &>/dev/null; then
 else
     echo -e "${BLUE}Paru not found. Installing paru...${RESET}"
 
-    sudo pacman -S --needed --noconfirm base-devel git
+    sudo pacman -S --needed --noconfirm base-devel git >/dev/null
 
     TMPDIR=$(mktemp -d)
     git clone https://aur.archlinux.org/paru-bin.git "$TMPDIR/paru-bin"
@@ -58,10 +58,10 @@ AUR_PACKAGES=(
 # Install packages
 # -----------------------------
 echo -e "${GREEN}Installing system packages via pacman...${RESET}"
-sudo pacman -S --noconfirm --needed "${PACMAN_PACKAGES[@]}"
+sudo pacman -S --noconfirm --needed "${PACMAN_PACKAGES[@]}" >/dev/null
 
 echo -e "${BLUE}Installing AUR packages via paru...${RESET}"
-paru -S --noconfirm --needed "${AUR_PACKAGES[@]}"
+paru -S --noconfirm --needed "${AUR_PACKAGES[@]}" >/dev/null
 
 # -----------------------------
 # Copy configuration files
@@ -96,9 +96,7 @@ CONFIG_DIRS=(
 )
 
 for dir in "${CONFIG_DIRS[@]}"; do
-    if [ -d "$dir" ]; then
-        cp -r "$dir" ~/.config/
-    fi
+    [ -d "$dir" ] && cp -r "$dir" ~/.config/
 done
 
 # TMUX configs
