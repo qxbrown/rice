@@ -12,10 +12,15 @@ RESET='\e[0m'
 echo -e "\n${GREEN}Qx Rice Installer${RESET}\n"
 
 # -----------------------------
-# Update system first
+# Force system update first
 # -----------------------------
-echo -e "${BLUE}Updating system...${RESET}"
-sudo pacman -Syu --noconfirm
+echo -e "${BLUE}Updating system (this may take a while)...${RESET}"
+sudo pacman -Syu --noconfirm || true
+
+# -----------------------------
+# Remove known conflicting packages
+# -----------------------------
+sudo pacman -R --noconfirm aws-cli-v2 docker-ce brave-bin || true
 
 # -----------------------------
 # Check if paru exists
