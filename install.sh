@@ -40,7 +40,7 @@ sudo sed -i 's/^#ParallelDownloads = 5$/ParallelDownloads = 15\nILoveCandy/' /et
 # Packages
 # -----------------------------
 PACMAN_PACKAGES=(
-    npm zsh pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
+    npm zsh pipewire pipewire-alsa pipewire-jack wireplumber
     ttf-jetbrains-mono-nerd noto-fonts-emoji noto-fonts-cjk ttf-font-awesome polkit-gnome mpv imv ffmpeg
     hyprland dunst wofi swaybg grim slurp kitty pamixer brightnessctl waybar xdg-desktop-portal-hyprland
     cliphist clang bluez bluez-utils pulseaudio-bluetooth gvfs-mtp btop qbittorrent thunar tumbler unzip
@@ -49,9 +49,10 @@ PACMAN_PACKAGES=(
     docker-machine kubectl kubeadm kubelet minikube ansible aws-cli
 )
 
+
 AUR_PACKAGES=(
     visual-studio-code-bin spotify brave-bin mpd-mpris-bin ncmpcpp mpd nwg-look zoxide hyprlock wlogout tldr
-    newsboat xclip urlview bat yt-dlp alacritty anyrun-git banana-cursor-bin clipse-bin
+    urlview bat yt-dlp alacritty anyrun-git banana-cursor-bin clipse-bin
     zsh-autosuggestions zsh-syntax-highlighting
 )
 
