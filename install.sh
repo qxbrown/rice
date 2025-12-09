@@ -40,7 +40,7 @@ sudo sed -i 's/^#ParallelDownloads = 5$/ParallelDownloads = 15\nILoveCandy/' /et
 # Packages
 # -----------------------------
 PACMAN_PACKAGES=(
-    npm zsh pipewire pipewire-alsa pipewire-jack wireplumber
+    npm zsh pipewire pipewire-alsa pipewire-audio pipewire-jack pipewire-media-session
     ttf-jetbrains-mono-nerd noto-fonts-emoji noto-fonts-cjk ttf-font-awesome polkit-gnome mpv imv ffmpeg
     hyprland dunst wofi swaybg grim slurp kitty pamixer brightnessctl waybar xdg-desktop-portal-hyprland
     cliphist clang bluez bluez-utils pulseaudio-bluetooth gvfs-mtp btop qbittorrent thunar tumbler unzip
