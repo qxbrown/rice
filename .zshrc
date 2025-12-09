@@ -1,14 +1,11 @@
-# ==============================
-# ZSH Configuration
-# ==============================
-
 # -----------------------------
 # Basic Environment
 # -----------------------------
 export VISUAL=nvim
 export EDITOR=nvim
-export BROWSER="/usr/bin/firefox"
+export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse --border top --bind=tab:up,shift-tab:down'
 export BAT_THEME=tokyonight_night
+export BROWSER="/usr/bin/firefox"
 export MOZ_ENABLE_WAYLAND=1
 
 # Go environment
@@ -20,30 +17,28 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
 
 # -----------------------------
-# Load Plugins
+# Load plugins
 # -----------------------------
-# zsh-autopair
+# Autopair
 if [[ ! -d ~/.zsh-autopair ]]; then
   git clone https://github.com/hlissner/zsh-autopair ~/.zsh-autopair
 fi
 source ~/.zsh-autopair/autopair.zsh
 
-# zsh-autosuggestions
-if [[ ! -d ~/.zsh/zsh-autosuggestions ]]; then
-  git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+# Autosuggestions
+if [[ -d ~/.zsh/zsh-autosuggestions ]]; then
+  source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 fi
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 
-# zsh-syntax-highlighting
-if [[ ! -d ~/.zsh-syntax-highlighting ]]; then
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh-syntax-highlighting
+# Syntax highlighting
+if [[ -f ~/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source ~/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
-source ~/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# fzf
+# FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# zoxide
+# Zoxide
 eval "$(zoxide init zsh)"
 
 # -----------------------------
@@ -80,9 +75,9 @@ alias ts='tmuxsession'
 alias tks='tmux kill-session'
 alias fm='thunar &'
 alias cls='clear'
-alias ls='eza --color=always --group-directories-first'
-alias la='eza -a --color=always --group-directories-first'
-alias ll='eza -l --color=always --group-directories-first'
+alias ls='exa --color=always --group-directories-first'
+alias la='exa -a --color=always --group-directories-first'
+alias ll='exa -l --color=always --group-directories-first'
 alias :q='exit'
 alias xam='sudo /opt/lampp/lampp start'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
