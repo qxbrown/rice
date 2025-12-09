@@ -52,6 +52,7 @@ PACMAN_PACKAGES=(
 AUR_PACKAGES=(
     visual-studio-code-bin spotify brave-bin mpd-mpris-bin ncmpcpp mpd nwg-look zoxide hyprlock wlogout tldr
     newsboat xclip urlview bat yt-dlp alacritty anyrun-git banana-cursor-bin clipse-bin
+    zsh-autosuggestions zsh-syntax-highlighting
 )
 
 # -----------------------------
@@ -68,48 +69,50 @@ paru -S --noconfirm --needed "${AUR_PACKAGES[@]}"
 # -----------------------------
 echo -e "${GREEN}Copying configuration files...${RESET}"
 
+# Ensure script directory is current
+SCRIPT_DIR=$(pwd)
 mkdir -p ~/.config ~/tmux
 
 CONFIG_DIRS=(
-    ".config/themes"
-    ".config/qbittorrent"
-    ".config/zathura"
-    ".config/btop"
-    ".config/anyrun"
-    ".config/dunst"
-    ".config/xfce4"
-    ".config/hypr"
-    ".config/alacritty"
-    ".config/mpv"
-    ".config/neofetch"
-    ".config/ranger"
-    ".config/waybar"
-    ".config/wofi"
-    ".config/Thunar"
-    ".config/nvim"
-    ".config/sioyek"
-    ".config/ncmpcpp"
-    ".config/mpd"
-    ".config/yazi"
-    ".config/bat"
-    ".config/newsboat"
+    "config/themes"
+    "config/qbittorrent"
+    "config/zathura"
+    "config/btop"
+    "config/anyrun"
+    "config/dunst"
+    "config/xfce4"
+    "config/hypr"
+    "config/alacritty"
+    "config/mpv"
+    "config/neofetch"
+    "config/ranger"
+    "config/waybar"
+    "config/wofi"
+    "config/Thunar"
+    "config/nvim"
+    "config/sioyek"
+    "config/ncmpcpp"
+    "config/mpd"
+    "config/yazi"
+    "config/bat"
+    "config/newsboat"
 )
 
 for dir in "${CONFIG_DIRS[@]}"; do
-    if [ -d "$dir" ]; then
-        cp -r "$dir" ~/.config/
+    if [ -d "$SCRIPT_DIR/$dir" ]; then
+        cp -r "$SCRIPT_DIR/$dir" ~/.config/
     fi
 done
 
 # TMUX configs
-cp -r tmux/.tmux-cht-command ~/tmux/ 2>/dev/null || true
-cp -r tmux/.tmux-cht-languages ~/tmux/ 2>/dev/null || true
-cp -r tmux/.tmux.conf ~/
-cp -r tmux/fsb.sh ~/tmux/ 2>/dev/null || true
-cp -r tmux/fshow.sh ~/tmux/ 2>/dev/null || true
+cp -r "$SCRIPT_DIR/tmux/.tmux-cht-command" ~/tmux/ 2>/dev/null || true
+cp -r "$SCRIPT_DIR/tmux/.tmux-cht-languages" ~/tmux/ 2>/dev/null || true
+cp -r "$SCRIPT_DIR/tmux/.tmux.conf" ~/
+cp -r "$SCRIPT_DIR/tmux/fsb.sh" ~/tmux/ 2>/dev/null || true
+cp -r "$SCRIPT_DIR/tmux/fshow.sh" ~/tmux/ 2>/dev/null || true
 
 # Home dotfiles
-cp -r .zshrc ~/
+cp -r "$SCRIPT_DIR/.zshrc" ~/
 
 # -----------------------------
 # Set script permissions
@@ -120,8 +123,12 @@ chmod +x ~/tmux/{fsb.sh,fshow.sh} 2>/dev/null || true
 # -----------------------------
 # Change default shell to Zsh
 # -----------------------------
+if ! grep -q "$(which zsh)" /etc/shells; then
+    echo "$(which zsh)" | sudo tee -a /etc/shells
+fi
+
 echo -e "${GREEN}Changing shell to Zsh...${RESET}"
-chsh -s /usr/bin/zsh || true
+chsh -s "$(which zsh)" || echo -e "${BLUE}Could not change shell automatically. Please run 'chsh -s $(which zsh)' manually.${RESET}"
 
 # -----------------------------
 # Finish message
